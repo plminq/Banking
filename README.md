@@ -13,7 +13,7 @@ The **Counterfactual Financial Oracle** is a sophisticated financial analysis pl
 ### Key Features
 
 ✨ **Multi-Agent AI Debate System**
-- **Gemini Agent** (Optimist): Identifies growth opportunities and upside potential
+- **OpenAI Agent** (Optimist): Identifies growth opportunities and upside potential
 - **DeepSeek Agent** (Critic): Challenges assumptions and identifies risks
 - **Automated Report Generator**: Compiles findings into comprehensive PDF reports
 
@@ -76,7 +76,7 @@ The **Counterfactual Financial Oracle** is a sophisticated financial analysis pl
    Create a `.env` file in the `counterfactual_oracle` directory:
    ```env
    LANDINGAI_API_KEY=your_landing_ai_key
-   GEMINI_API_KEY=your_gemini_key
+   OPENAI_API_KEY=your_openai_key
    DEEPSEEK_API_KEY=your_deepseek_key
    ```
 
@@ -170,7 +170,7 @@ counterfactual_oracle/
 - **Frontend**: Streamlit (Interactive dashboard)
 - **Backend**: Python 3.8+
 - **AI Models**:
-  - Google Gemini (Optimistic analysis)
+  - OpenAI GPT-4 (Optimistic analysis)
   - DeepSeek (Critical analysis)
 - **Data Processing**: Landing AI ADE API
 - **Financial Modeling**: NumPy, Pandas
@@ -192,9 +192,10 @@ The simulation engine runs 10,000 scenarios to model financial outcomes under va
 
 The multi-agent system provides balanced analysis through:
 - **Structured Prompts**: Mathematical grounding rules prevent hallucinations
-- **Convergence Detection**: Automatically identifies when agents reach consensus
+- **Solvency Logic Gate**: Prevents false liquidity alarms by checking cash reserves against FCF burn
+- **Convergence Detection**: Uses LLM analysis to detect true consensus (not just keyword matching)
+- **Consensus Phase**: Agents actively seek common ground in later rounds
 - **Evidence-Based Arguments**: All claims must be backed by data from financial reports
-- **Progressive Refinement**: Multi-round debate ensures thorough analysis
 
 ### Document Extraction
 
@@ -202,6 +203,13 @@ Landing AI ADE intelligently extracts:
 - **Tier 1**: Core financial statements (Income, Balance Sheet, Cash Flow)
 - **Tier 2**: Segment data, geographic breakdown, debt schedules
 - **Tier 3**: Non-GAAP metrics, MD&A commentary, risk factors
+- **Performance Metrics**: Tracks extraction time, page count, and credit usage
+
+### Simulation Engine
+
+- **Dynamic Base Rates**: Simulation binds to actual historical revenue growth (not generic baselines)
+- **Monte Carlo**: 10,000 scenarios modeling volatility and structural shifts
+- **Traceability**: Full audit log of assumptions and driver logic
 
 ## Contributing
 
@@ -220,7 +228,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## Acknowledgments
 
 - **Landing AI** for document extraction capabilities
-- **Google Gemini** for optimistic financial analysis
+- **OpenAI** for optimistic financial analysis
 - **DeepSeek** for critical validation
 - **Streamlit** for the interactive dashboard framework
 
