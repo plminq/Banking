@@ -240,4 +240,3 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-**Note**: This project was developed for the AI Large Language Model Track, showcasing advanced multi-agent orchestration and financial modeling.
