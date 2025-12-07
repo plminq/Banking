@@ -52,7 +52,7 @@ export const scenariosApi = {
         return response.data;
     },
     generateReport: async (id: string): Promise<Blob> => {
-        const response = await api.get(`/scenarios/${id}/report`, {
+        const response = await api.post(`/scenarios/${id}/report`, {}, {
             responseType: 'blob',
         });
         return response.data;
