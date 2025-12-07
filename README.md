@@ -227,9 +227,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## Acknowledgments
 
 - **Landing AI** for document extraction capabilities
-- **OpenAI** for optimistic financial analysis
+- **Gemini** for optimistic financial analysis
 - **DeepSeek** for critical validation
-- **Streamlit** for the interactive dashboard framework
 
 ## Contact
 
