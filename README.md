@@ -12,7 +12,7 @@ The **Counterfactual Financial Oracle** is a sophisticated financial analysis pl
 ### Key Features
 
 ✨ **Multi-Agent AI Debate System**
-- **OpenAI Agent** (Optimist): Identifies growth opportunities and upside potential
+- **Gemini Agent** (Optimist): Identifies growth opportunities and upside potential
 - **DeepSeek Agent** (Critic): Challenges assumptions and identifies risks
 - **Automated Report Generator**: Compiles findings into comprehensive PDF reports
 
