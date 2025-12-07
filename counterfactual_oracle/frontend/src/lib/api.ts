@@ -57,4 +57,7 @@ export const scenariosApi = {
         });
         return response.data;
     },
+    delete: async (id: string): Promise<void> => {
+        await api.delete(`/scenarios/${id}`);
+    },
 };

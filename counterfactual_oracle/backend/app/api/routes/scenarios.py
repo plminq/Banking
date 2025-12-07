@@ -240,6 +240,24 @@ async def list_scenarios(
     ]
 
 
+@router.delete("/{scenario_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_scenario(
+    scenario_id: uuid.UUID,
+    db: Session = Depends(get_db)
+):
+    """Delete a scenario"""
+    scenario = db.query(Scenario).filter(Scenario.id == scenario_id).first()
+    if not scenario:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Scenario not found"
+        )
+    
+    db.delete(scenario)
+    db.commit()
+    return None
+
+
 @router.post("/{scenario_id}/report")
 async def generate_pdf_report(
     scenario_id: uuid.UUID,

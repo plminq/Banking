@@ -1,14 +1,34 @@
-import React from 'react';
-import { useQuery } from '@tanstack/react-query';
+import React, { useState } from 'react';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
 import { scenariosApi } from '../lib/api';
-import { Zap, ChevronRight, Clock, AlertCircle, CheckCircle } from 'lucide-react';
+import { Zap, ChevronRight, Clock, AlertCircle, CheckCircle, Trash2 } from 'lucide-react';
 
 const ScenarioList: React.FC = () => {
+    const queryClient = useQueryClient();
+    const [deletingId, setDeletingId] = useState<string | null>(null);
+
     const { data: scenarios, isLoading } = useQuery({
         queryKey: ['scenarios'],
         queryFn: scenariosApi.list,
     });
+
+    const deleteMutation = useMutation({
+        mutationFn: (id: string) => scenariosApi.delete(id),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['scenarios'] });
+            setDeletingId(null);
+        },
+    });
+
+    const handleDelete = (e: React.MouseEvent, id: string) => {
+        e.preventDefault();
+        e.stopPropagation();
+        if (window.confirm('Are you sure you want to delete this scenario?')) {
+            setDeletingId(id);
+            deleteMutation.mutate(id);
+        }
+    };
 
     if (isLoading) {
         return (
@@ -77,13 +97,25 @@ const ScenarioList: React.FC = () => {
                             </div>
                         </div>
 
-                        <div className="flex items-center gap-6">
+                        <div className="flex items-center gap-4">
                             {scenario.status === 'COMPLETED' && scenario.final_verdict && (
                                 <div className="text-right hidden md:block">
                                     <p className="text-xs text-gray-500 mb-0.5">Verdict</p>
                                     <p className="font-medium text-white">{scenario.final_verdict}</p>
                                 </div>
                             )}
+                            <button
+                                onClick={(e) => handleDelete(e, scenario.id)}
+                                disabled={deletingId === scenario.id}
+                                className="p-2 text-gray-500 hover:text-red-400 hover:bg-red-900/20 rounded-lg transition-colors"
+                                title="Delete scenario"
+                            >
+                                {deletingId === scenario.id ? (
+                                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-red-400"></div>
+                                ) : (
+                                    <Trash2 size={20} />
+                                )}
+                            </button>
                             <ChevronRight size={20} className="text-gray-600 group-hover:text-white transition-colors" />
                         </div>
                     </Link>
@@ -108,3 +140,4 @@ const ScenarioList: React.FC = () => {
 };
 
 export default ScenarioList;
+
