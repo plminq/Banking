@@ -13,7 +13,7 @@ The **Counterfactual Financial Oracle** is a sophisticated financial analysis pl
 
 ✨ **Multi-Agent AI Debate System**
 - **Gemini Agent** (Optimist): Identifies growth opportunities and upside potential
-- **DeepSeek Agent** (Critic): Challenges assumptions and identifies risks
+- **DeepSeek V3.2 Speciale** (Critic): Challenges assumptions and identifies risks
 - **Automated Report Generator**: Compiles findings into comprehensive PDF reports
 
 📊 **Advanced Financial Modeling**
@@ -170,7 +170,7 @@ counterfactual_oracle/
 - **Backend**: Python 3.8+
 - **AI Models**:
   - OpenAI GPT-4 (Optimistic analysis)
-  - DeepSeek (Critical analysis)
+  - DeepSeek V3.2 Speciale (Critical analysis)
 - **Data Processing**: Landing AI ADE API
 - **Financial Modeling**: NumPy, Pandas
 - **Data Validation**: Pydantic
@@ -228,7 +228,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 - **Landing AI** for document extraction capabilities
 - **Gemini** for optimistic financial analysis
-- **DeepSeek** for critical validation
+- **DeepSeek V3.2 Speciale** for critical validation
 
 ## Contact
 
