@@ -2,14 +2,18 @@
 from app.domain.models import FinancialReport, ScenarioParams, AggregatedSimulation
 from app.domain.logic import run_monte_carlo
 from app.domain.agents.simulator import SimulatorAgent
-from app.core.config import settings
+from app.api.routes.settings import get_api_key
 
 
 class SimulationService:
     """Service for running financial simulations"""
     
-    def __init__(self):
-        self.simulator_agent = SimulatorAgent(api_key=settings.gemini_api_key)
+    def _get_simulator_agent(self):
+        """Get simulator agent with current API key"""
+        api_key = get_api_key("gemini_api_key")
+        if not api_key:
+            raise ValueError("Gemini API key not configured. Please set it in Settings.")
+        return SimulatorAgent(api_key=api_key)
     
     def run_simulation(
         self, 
@@ -21,9 +25,7 @@ class SimulationService:
         agg_results = run_monte_carlo(report, params)
         
         # Enhance with AI-generated qualitative analysis
-        agg_results = self.simulator_agent.run_simulation(report, params)
+        simulator_agent = self._get_simulator_agent()
+        agg_results = simulator_agent.run_simulation(report, params)
         
         return agg_results
-
-
-

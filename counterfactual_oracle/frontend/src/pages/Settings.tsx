@@ -56,16 +56,40 @@ const Settings: React.FC = () => {
     const handleSaveKeys = async () => {
         setIsSaving(true);
         setSaveMessage(null);
+        setValidationResults({});
 
         try {
-            const response = await axios.post(`${API_URL}/api/settings/keys`, {
+            // Step 1: Validate keys first
+            const validateResponse = await axios.post(`${API_URL}/api/settings/keys/validate`, {
                 gemini_api_key: apiKeys.gemini || undefined,
                 deepseek_api_key: apiKeys.deepSeek || undefined,
                 landingai_api_key: apiKeys.landingAi || undefined
             });
 
-            setKeyStatus(response.data);
-            setSaveMessage({ type: 'success', text: 'API keys saved successfully!' });
+            setValidationResults(validateResponse.data);
+
+            // Check if any provided keys failed validation
+            const results = validateResponse.data;
+            const hasInvalidKey =
+                (apiKeys.gemini && !results.gemini?.valid) ||
+                (apiKeys.deepSeek && !results.deepseek?.valid) ||
+                (apiKeys.landingAi && !results.landingai?.valid);
+
+            if (hasInvalidKey) {
+                setSaveMessage({ type: 'error', text: 'Some API keys are invalid. Please check and try again.' });
+                setIsSaving(false);
+                return;
+            }
+
+            // Step 2: Save keys if validation passed
+            const saveResponse = await axios.post(`${API_URL}/api/settings/keys`, {
+                gemini_api_key: apiKeys.gemini || undefined,
+                deepseek_api_key: apiKeys.deepSeek || undefined,
+                landingai_api_key: apiKeys.landingAi || undefined
+            });
+
+            setKeyStatus(saveResponse.data);
+            setSaveMessage({ type: 'success', text: '✓ API keys validated and saved! They will be used by the program.' });
 
             // Clear the input fields after saving
             setApiKeys({ landingAi: '', gemini: '', deepSeek: '' });
@@ -88,8 +112,20 @@ const Settings: React.FC = () => {
             });
 
             setValidationResults(response.data);
+
+            // Show summary message
+            const results = response.data;
+            const allValid =
+                (!apiKeys.gemini || results.gemini?.valid) &&
+                (!apiKeys.deepSeek || results.deepseek?.valid) &&
+                (!apiKeys.landingAi || results.landingai?.valid);
+
+            if (allValid && (apiKeys.gemini || apiKeys.deepSeek || apiKeys.landingAi)) {
+                setSaveMessage({ type: 'success', text: '✓ All provided keys are valid! Click Save to use them.' });
+            }
         } catch (error) {
             console.error('Validation failed:', error);
+            setSaveMessage({ type: 'error', text: 'Validation request failed. Please check your connection.' });
         } finally {
             setIsLoading(false);
         }
