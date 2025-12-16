@@ -50,6 +50,13 @@ async def save_api_keys(keys: APIKeys):
     return await get_api_key_status()
 
 
+@router.delete("/keys", response_model=APIKeyStatus)
+async def clear_api_keys():
+    """Clear all API keys from session storage"""
+    _api_keys.clear()
+    return await get_api_key_status()
+
+
 @router.post("/keys/validate")
 async def validate_api_keys(keys: APIKeys):
     """Validate API keys by testing connections"""

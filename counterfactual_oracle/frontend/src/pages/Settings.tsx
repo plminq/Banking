@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Save, Key, Moon, Sliders, Database, CheckCircle, XCircle, Loader2 } from 'lucide-react';
+import { Save, Key, Moon, Sliders, Database, CheckCircle, XCircle, Loader2, Trash2 } from 'lucide-react';
 import axios from 'axios';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
@@ -30,6 +30,7 @@ const Settings: React.FC = () => {
 
     const [isLoading, setIsLoading] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
+    const [isClearing, setIsClearing] = useState(false);
     const [saveMessage, setSaveMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
 
     const [simulationDefaults, setSimulationDefaults] = useState({
@@ -128,6 +129,22 @@ const Settings: React.FC = () => {
             setSaveMessage({ type: 'error', text: 'Validation request failed. Please check your connection.' });
         } finally {
             setIsLoading(false);
+        }
+    };
+
+    const handleClearKeys = async () => {
+        setIsClearing(true);
+        setSaveMessage(null);
+        setValidationResults({});
+
+        try {
+            const response = await axios.delete(`${API_URL}/api/settings/keys`);
+            setKeyStatus(response.data);
+            setSaveMessage({ type: 'success', text: 'All API keys have been cleared.' });
+        } catch (error) {
+            setSaveMessage({ type: 'error', text: 'Failed to clear API keys. Please try again.' });
+        } finally {
+            setIsClearing(false);
         }
     };
 
@@ -237,6 +254,18 @@ const Settings: React.FC = () => {
                             <span>Save API Keys</span>
                         </button>
                     </div>
+
+                    {/* Clear Keys Button */}
+                    {(keyStatus.gemini || keyStatus.deepseek || keyStatus.landingai) && (
+                        <button
+                            onClick={handleClearKeys}
+                            disabled={isClearing}
+                            className="w-full mt-4 bg-red-900/20 text-red-400 border border-red-900/50 font-medium py-2.5 rounded-lg hover:bg-red-900/30 transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                            {isClearing ? <Loader2 size={18} className="animate-spin" /> : <Trash2 size={18} />}
+                            <span>Clear All API Keys</span>
+                        </button>
+                    )}
                 </div>
             </div>
 
