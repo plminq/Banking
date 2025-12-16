@@ -29,6 +29,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         { name: 'Upload', path: '/upload', icon: Upload },
         { name: 'Metrics', path: '/metrics', icon: Activity },
         { name: 'Simulation', path: '/simulation', icon: Zap },
+        { name: 'Settings', path: '/settings', icon: Settings },
     ];
 
     return (

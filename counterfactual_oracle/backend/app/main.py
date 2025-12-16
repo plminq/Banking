@@ -2,7 +2,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import settings
-from app.api.routes import reports, scenarios
+from app.api.routes import reports, scenarios, settings as settings_routes
 
 app = FastAPI(
     title="Counterfactual Financial Oracle API",
@@ -22,6 +22,7 @@ app.add_middleware(
 # Include routers
 app.include_router(reports.router, prefix="/api/reports", tags=["reports"])
 app.include_router(scenarios.router, prefix="/api/scenarios", tags=["scenarios"])
+app.include_router(settings_routes.router, prefix="/api/settings", tags=["settings"])
 
 
 @app.get("/")
