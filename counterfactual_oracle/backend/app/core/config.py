@@ -1,6 +1,7 @@
 """Application configuration from environment variables"""
 from pydantic_settings import BaseSettings
 from typing import List
+import os
 
 
 class Settings(BaseSettings):
@@ -18,8 +19,12 @@ class Settings(BaseSettings):
     backend_host: str = "0.0.0.0"
     backend_port: int = 8000
     
-    # CORS
-    cors_origins: List[str] = ["http://localhost:5173", "http://localhost:3000"]
+    # CORS - read from environment or use defaults
+    cors_origins: List[str] = [
+        "http://localhost:5173",
+        "http://localhost:3000",
+        "https://*.railway.app"
+    ]
     
     # Optional: Redis for background jobs
     redis_url: str | None = None
@@ -28,6 +33,14 @@ class Settings(BaseSettings):
         env_file = ".env"
         case_sensitive = False
         extra = "ignore"
+    
+    @property
+    def cors_origins_list(self) -> List[str]:
+        """Get CORS origins, checking for environment override"""
+        env_origins = os.getenv("CORS_ORIGINS", "")
+        if env_origins:
+            return [origin.strip() for origin in env_origins.split(",")]
+        return self.cors_origins
 
 
 settings = Settings()
